@@ -1,31 +1,36 @@
 'use client'
 
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@radix-ui/react-accordion'
+import React from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { ElementsTab } from './tabs/ElementsTab';
+import { ComponentsTab } from './tabs/ComponentsTab';
+import { LayersTab } from './tabs/LayersTab';
 
-export default function Sidebar() {
+export const Sidebar = () => {
   return (
-    <div className="w-64 bg-white dark:bg-gray-800 border-r dark:border-gray-700 overflow-y-auto">
-      <Accordion type="single" collapsible className="w-full">
-        <AccordionItem value="sections">
-          <AccordionTrigger className="px-4 py-2 font-semibold">Sections</AccordionTrigger>
-          <AccordionContent className="px-4 py-2">Header Blocks, Hero Layouts...</AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="elements">
-          <AccordionTrigger className="px-4 py-2 font-semibold">Elements</AccordionTrigger>
-          <AccordionContent className="px-4 py-2">Text, Images, Buttons...</AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="media">
-          <AccordionTrigger className="px-4 py-2 font-semibold">Media</AccordionTrigger>
-          <AccordionContent className="px-4 py-2">Uploaded images, Videos...</AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value="templates">
-          <AccordionTrigger className="px-4 py-2 font-semibold">Templates</AccordionTrigger>
-          <AccordionContent className="px-4 py-2">Full page templates...</AccordionContent>
-        </AccordionItem>
-      </Accordion>
+    <div className="w-80 h-full border-r bg-white">
+      <Tabs defaultValue="elements" className="h-full">
+        <TabsList className="w-full justify-start rounded-none border-b bg-transparent p-0">
+          <TabsTrigger value="elements" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary">
+            Elements
+          </TabsTrigger>
+          <TabsTrigger value="components" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary">
+            Components
+          </TabsTrigger>
+          <TabsTrigger value="layers" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary">
+            Layers
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="elements" className="h-[calc(100%-40px)] overflow-auto">
+          <ElementsTab />
+        </TabsContent>
+        <TabsContent value="components" className="h-[calc(100%-40px)] overflow-auto">
+          <ComponentsTab />
+        </TabsContent>
+        <TabsContent value="layers" className="h-[calc(100%-40px)] overflow-auto">
+          <LayersTab />
+        </TabsContent>
+      </Tabs>
     </div>
-  )
-}
+  );
+};

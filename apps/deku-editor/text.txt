@@ -1,0 +1,13 @@
+🖼 Central Canvas Page Frame:
+make the page single-page instead of multipage
+A clearly defined, resizable “page” (similar to Figma's artboard/frame).
+Only components placed inside this page are considered part of the published output.
+Components dropped outside the page should remain editable but not published.
+ Drag-and-Drop Component should have features like Snapping, alignment guides, and resizing handles like Figma.
+Users should be able to adjust the height and width of the page to fit content or design preferences.
+Scrolling behaviour inside the preview should mirror how the final site will behave.
+Canvas Navigation:
+Pan/zoom capabilities across the canvas area.
+Layers panel should manage stacking/order of components in tree like format.
+Auto-saving of design progress.
+Optional version history (version control) and undo/redo controls.

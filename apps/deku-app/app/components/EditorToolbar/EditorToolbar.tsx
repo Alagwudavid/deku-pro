@@ -31,7 +31,7 @@ export default function EditorToolbar() {
         </span>
       </div>
       {/* Center: File name and badge */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2">
+      <div className="flex items-center gap-2">
         <span className="text-white font-medium text-base px-3 py-1 rounded flex items-center gap-1 cursor-pointer">
           Untitled file <FiChevronDown className="ml-1 text-[#6B7280]" />
         </span>

@@ -11,4 +11,3 @@ module.exports = {
     },
     plugins: [],
   }
-  cd apps/deku-editor && npm install clsx tailwind-merge @radix-ui/react-tabs

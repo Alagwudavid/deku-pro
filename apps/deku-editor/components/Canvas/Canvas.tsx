@@ -83,7 +83,7 @@ const CanvasContent: React.FC = () => {
       {/* Background */}
       <div className="absolute inset-0 bg-muted" />
 
-      <div
+      <div 
         ref={canvasRef}
         className="absolute inset-0 flex flex-row items-start justify-start gap-8 p-8 overflow-x-auto"
         style={{ 
@@ -91,13 +91,13 @@ const CanvasContent: React.FC = () => {
         }}
       >
         {pages.map((page, index) => (
-          <div 
+        <div 
             key={page.id} 
             className={cn(
               "flex-shrink-0 flex flex-col gap-2 relative group",
               "transition-all duration-200"
             )}
-            style={{
+          style={{
               transform: page.id === selectedPage ? `scale(${zoom})` : 'scale(1)',
               transformOrigin: 'top left',
             }}

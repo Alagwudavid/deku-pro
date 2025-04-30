@@ -88,19 +88,27 @@ const CanvasContent: React.FC = () => {
         className="absolute inset-0 flex flex-row items-start justify-start gap-8 p-8 overflow-x-auto"
         style={{ 
           width: 'fit-content',
-          transform: `scale(${zoom})`,
-          transformOrigin: 'top left',
         }}
       >
         {pages.map((page, index) => (
-          <div key={page.id} className="flex-shrink-0 flex flex-col gap-2">
+          <div 
+            key={page.id} 
+            className={cn(
+              "flex-shrink-0 flex flex-col gap-2 relative group",
+              "transition-all duration-200"
+            )}
+            style={{
+              transform: page.id === selectedPage ? `scale(${zoom})` : 'scale(1)',
+              transformOrigin: 'top left',
+            }}
+          >
             {/* Page name and add button */}
             <div className="flex items-center gap-2 bg-background/80 backdrop-blur-sm rounded-lg shadow-lg p-2 w-fit">
               <div
                 className={cn(
                   "text-sm font-medium px-3 py-1 rounded-md cursor-pointer",
                   selectedPage === page.id
-                    ? "bg-primary/10 text-primary"
+                    ? "bg-blue-100 text-blue-600"
                     : "text-muted-foreground hover:text-foreground"
                 )}
                 onClick={() => selectPage(page.id)}
@@ -126,10 +134,18 @@ const CanvasContent: React.FC = () => {
                 </Button>
               )}
             </div>
-            <CanvasPage
-              page={page}
-              isSelected={page.id === selectedPage}
-            />
+            <div className={cn(
+              "relative",
+              "before:absolute before:inset-0 before:rounded-lg",
+              "before:transition-all before:duration-200",
+              "group-hover:before:ring-2 group-hover:before:ring-blue-500/50",
+              selectedPage === page.id && "before:ring-2 before:ring-blue-500 before:ring-offset-2"
+            )}>
+              <CanvasPage
+                page={page}
+                isSelected={page.id === selectedPage}
+              />
+            </div>
           </div>
         ))}
       </div>

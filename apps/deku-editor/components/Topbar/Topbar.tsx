@@ -3,7 +3,7 @@
 import React from 'react';
 import { useCanvasStore } from '@/lib/store/canvasStore'
 import { Button } from '@/components/ui/button'
-import { Undo2, Redo2, Save, Eye, EyeOff, UploadCloud, Monitor, Tablet, Smartphone, ZoomIn, ZoomOut, Download, FileImage, FileText, Code, FileArchive } from 'lucide-react'
+import { Undo2, Redo2, Save, Eye, EyeOff, UploadCloud, Monitor, Tablet, Smartphone, ZoomIn, ZoomOut, Download, FileImage, FileText, Code, FileArchive, Sun, Moon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import DeviceToggle from './DeviceToggle'
 import ZoomControls from './ZoomControls'
@@ -17,6 +17,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useTheme } from 'next-themes'
+import { Share2 } from 'lucide-react'
 
 const Topbar: React.FC = () => {
   const {
@@ -35,6 +37,7 @@ const Topbar: React.FC = () => {
 
   const { selectedPage } = useEditor()
   const [zoom, setZoom] = React.useState(100)
+  const { theme, setTheme } = useTheme()
 
   const devices = [
     { type: 'mobile', icon: Smartphone, label: 'Mobile' },
@@ -119,37 +122,37 @@ const Topbar: React.FC = () => {
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-              <Download className="w-4 h-4 mr-2" />
-              Export
+            <Button variant="ghost" size="sm" className="h-8 gap-2">
+              <Download className="h-4 w-4" />
+              <span className="hidden sm:inline">Export</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuItem onClick={() => handleExport('png')}>
-              <FileImage className="w-4 h-4 mr-2" />
-              Export as PNG
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem className="gap-2">
+              <FileImage className="h-4 w-4" />
+              <span>Export as PNG</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleExport('pdf')}>
-              <FileText className="w-4 h-4 mr-2" />
-              Export as PDF
+            <DropdownMenuItem className="gap-2">
+              <FileText className="h-4 w-4" />
+              <span>Export as PDF</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleExport('svg')}>
-              <FileImage className="w-4 h-4 mr-2" />
-              Export as SVG
+            <DropdownMenuItem className="gap-2">
+              <FileText className="h-4 w-4" />
+              <span>Export as SVG</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleExport('code')}>
-              <Code className="w-4 h-4 mr-2" />
-              Export Code
+            <DropdownMenuItem className="gap-2">
+              <FileArchive className="h-4 w-4" />
+              <span>Export Code (ZIP)</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleExport('zip')}>
-              <FileArchive className="w-4 h-4 mr-2" />
-              Export as ZIP
+            <DropdownMenuItem className="gap-2">
+              <Share2 className="h-4 w-4" />
+              <span>Export to...</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button variant="default" size="sm">
-          <UploadCloud className="w-4 h-4 mr-2" />
-          Publish
+        <Button variant="default" size="sm" className="h-8 gap-2">
+          <span className="hidden sm:inline">Publish</span>
+          <UploadCloud className="h-4 w-4" />
         </Button>
       </div>
     </div>

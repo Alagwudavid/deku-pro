@@ -24,13 +24,19 @@ import {
   CiAlignCenterH,
 } from "react-icons/ci";
 import { useState } from "react";
+import { useStore } from "../../store/store";
 
 export default function PropertiesPanel() {
+  const { showPropertiesPanel } = useStore();
   // Section toggles
   const [layoutOpen, setLayoutOpen] = useState(true);
   const [effectsOpen, setEffectsOpen] = useState(false);
   const [stylesOpen, setStylesOpen] = useState(true);
   const [codeOpen, setCodeOpen] = useState(false);
+
+  if (!showPropertiesPanel) {
+    return null;
+  }
 
   return (
     <aside className="w-[320px] bg-[#181A20] border-l border-[#23262F] flex flex-col h-[calc(100vh-3.5rem)] shadow-lg">
@@ -177,7 +183,9 @@ export default function PropertiesPanel() {
           onToggle={() => setEffectsOpen((v) => !v)}
         />
         {effectsOpen && (
-          <div className="text-xs text-[#6B7280] px-4 pt-4 pb-2">No effects applied.</div>
+          <div className="text-xs text-[#6B7280] px-4 pt-4 pb-2">
+            No effects applied.
+          </div>
         )}
 
         {/* Styles Section */}
@@ -215,7 +223,9 @@ export default function PropertiesPanel() {
           onToggle={() => setCodeOpen((v) => !v)}
         />
         {codeOpen && (
-          <div className="text-xs text-[#6B7280] px-4 pt-4 pb-2">No code overrides.</div>
+          <div className="text-xs text-[#6B7280] px-4 pt-4 pb-2">
+            No code overrides.
+          </div>
         )}
       </div>
     </aside>

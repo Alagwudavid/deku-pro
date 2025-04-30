@@ -25,12 +25,6 @@ export default function Topbar() {
 
       {/* Right: Actions and user */}
       <div className="flex items-center gap-2 ml-auto">
-        <button className="bg-[#23262F] hover:bg-[#23262F]/80 text-white px-3 py-1.5 rounded font-medium shadow transition">
-          Publish
-        </button>
-        <button className="bg-[#377DFF] hover:bg-[#2563eb] text-white px-4 py-1.5 rounded font-medium shadow transition">
-          Share
-        </button>
         <button className="p-2 rounded hover:bg-[#23262F]/80 text-[#E5E7EB] text-xl">
           <FiCode />
         </button>

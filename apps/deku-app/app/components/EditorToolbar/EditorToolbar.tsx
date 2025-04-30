@@ -22,8 +22,12 @@ import {
   FiImage,
   FiPrinter,
   FiPackage,
+  FiTrash2,
+  FiCornerUpLeft,
+  FiCornerUpRight,
 } from "react-icons/fi";
 import { useStore } from "../../store/store";
+import { useHistory } from "../../contexts/HistoryContext";
 
 interface Device {
   id: string;
@@ -152,14 +156,27 @@ export default function EditorToolbar() {
   const [zoom, setZoom] = useState<number>(100);
   const [lastSaved, setLastSaved] = useState<string>("2m ago");
   const [isUnsaved, setIsUnsaved] = useState(false);
+  const [fileHistory, setFileHistory] = useState([
+    { name: "LandingPage.deku", time: "2m ago" },
+    { name: "Scootric.deku", time: "10m ago" },
+    { name: "Gallery.deku", time: "1h ago" },
+  ]);
   const {
     showPropertiesPanel,
     setShowPropertiesPanel,
     showHistoryPanel,
     setShowHistoryPanel,
   } = useStore();
+  const {
+    state: { snapshots, current },
+    undo,
+    redo,
+  } = useHistory();
   const devicesRef = useRef<HTMLDivElement>(null);
   const fileMenuRef = useRef<HTMLDivElement>(null);
+  const historyRef = useRef<HTMLDivElement>(null);
+
+  const clearHistory = () => setFileHistory([]);
 
   const handleDeviceClick = (device: Device) => {
     setSelectedDevice(device.id);
@@ -180,6 +197,12 @@ export default function EditorToolbar() {
     ) {
       setShowFileMenu(false);
       setExpandedSubmenu(null);
+    }
+    if (
+      historyRef.current &&
+      !historyRef.current.contains(event.target as Node)
+    ) {
+      setShowHistoryPanel(false);
     }
   };
 
@@ -397,14 +420,70 @@ export default function EditorToolbar() {
           )}
         </div>
 
-        <button
-          className={`flex items-center gap-2 text-sm text-[#A1A1AA] hover:text-white ${
-            showHistoryPanel ? "text-white" : ""
-          }`}
-          onClick={() => setShowHistoryPanel(!showHistoryPanel)}
-        >
-          <FiClock /> History
-        </button>
+        <div className="relative" ref={historyRef}>
+          <button
+            className={`flex items-center gap-2 text-sm text-[#A1A1AA] hover:text-white ${
+              showHistoryPanel ? "text-white" : ""
+            }`}
+            onClick={() => setShowHistoryPanel(!showHistoryPanel)}
+          >
+            <FiClock /> History
+          </button>
+          {showHistoryPanel && (
+            <div className="absolute top-full left-0 mt-2 w-64 bg-[#181A20] border border-[#23262F] rounded-lg shadow-lg overflow-hidden">
+              <div className="flex items-center justify-between p-3 border-b border-[#23262F]">
+                <span className="text-xs text-[#A1A1AA] font-semibold flex items-center gap-1">
+                  <FiClock className="text-[#377DFF]" /> File History
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={undo}
+                    disabled={current <= 0}
+                    className="text-[#6B7280] hover:text-white disabled:opacity-50 disabled:hover:text-[#6B7280]"
+                    title="Undo"
+                  >
+                    <FiCornerUpLeft />
+                  </button>
+                  <button
+                    onClick={redo}
+                    disabled={current >= snapshots.length - 1}
+                    className="text-[#6B7280] hover:text-white disabled:opacity-50 disabled:hover:text-[#6B7280]"
+                    title="Redo"
+                  >
+                    <FiCornerUpRight />
+                  </button>
+                  <button
+                    onClick={clearHistory}
+                    className="text-[#6B7280] hover:text-red-500 text-xs flex items-center gap-1"
+                  >
+                    <FiTrash2 /> Clear
+                  </button>
+                </div>
+              </div>
+              <div className="max-h-48 overflow-y-auto">
+                {fileHistory.length === 0 ? (
+                  <div className="text-xs text-[#6B7280] text-center py-4">
+                    No recent files
+                  </div>
+                ) : (
+                  fileHistory.map((file, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between px-3 py-2 hover:bg-[#23262F] cursor-pointer"
+                    >
+                      <span className="text-sm text-white truncate">
+                        {file.name}
+                      </span>
+                      <span className="text-xs text-[#6B7280] ml-2">
+                        {file.time}
+                      </span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+        </div>
 
         <div className="relative" ref={devicesRef}>
           <button

@@ -1,0 +1,1 @@
+i think you should move the file history manager panel from the sidebar to the editortoolbar because if i ask you to add a function to the file history manager panel from the sidebar to make it draggable within the main editor container you would create a new element for history pane in the editortoolbar and it would conflict with the one on the sidebar

@@ -81,14 +81,6 @@ export default function Sidebar() {
   const { showHistoryPanel } = useStore();
   const [selected, setSelected] = useState("Hero Section");
   const [showPanel, setShowPanel] = useState(false);
-  // Example file history state
-  const [fileHistory, setFileHistory] = useState([
-    { name: "LandingPage.deku", time: "2m ago" },
-    { name: "Scootric.deku", time: "10m ago" },
-    { name: "Gallery.deku", time: "1h ago" },
-  ]);
-
-  const clearHistory = () => setFileHistory([]);
 
   // Show panel on hover or when toggled open
   const handleMouseEnter = () => setShowPanel(true);
@@ -169,44 +161,6 @@ export default function Sidebar() {
               <FiLayers /> Home
             </button>
           </div>
-        </div>
-      </div>
-
-      {/* File History Manager */}
-      <div
-        className={`
-          fixed bottom-4 left-16 w-72 bg-[#181A20] rounded-2xl shadow-lg border border-[#23262F] p-4 z-40
-          transition-all duration-300
-          ${showHistoryPanel ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none translate-y-4"}
-        `}
-      >
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-[#A1A1AA] font-semibold flex items-center gap-1">
-            <FiClock className="text-[#377DFF]" /> File History
-          </span>
-          <button
-            onClick={clearHistory}
-            className="text-[#6B7280] hover:text-red-500 text-xs flex items-center gap-1"
-          >
-            <FiTrash2 /> Clear
-          </button>
-        </div>
-        <div className="max-h-32 overflow-y-auto space-y-1">
-          {fileHistory.length === 0 ? (
-            <div className="text-xs text-[#6B7280] text-center py-2">
-              No recent files
-            </div>
-          ) : (
-            fileHistory.map((file, idx) => (
-              <div
-                key={idx}
-                className="flex items-center justify-between px-2 py-1 rounded-lg hover:bg-[#23262F] cursor-pointer"
-              >
-                <span className="text-sm text-white truncate">{file.name}</span>
-                <span className="text-xs text-[#6B7280] ml-2">{file.time}</span>
-              </div>
-            ))
-          )}
         </div>
       </div>
     </>

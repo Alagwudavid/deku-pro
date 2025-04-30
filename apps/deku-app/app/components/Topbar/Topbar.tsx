@@ -1,14 +1,6 @@
 "use client";
 import { useState } from "react";
-import {
-  FiChevronDown,
-  FiUpload,
-  FiShare2,
-  FiCode,
-  FiDownload,
-  FiPlay,
-  FiEdit2,
-} from "react-icons/fi";
+
 import { TbEditOff } from "react-icons/tb";
 
 export default function Topbar() {
@@ -23,17 +15,8 @@ export default function Topbar() {
         <span className=" text-xs absolute top-0 -right-5">NG</span>
       </div>
 
-      {/* Right: Actions and user */}
+      {/* Right: user */}
       <div className="flex items-center gap-2 ml-auto">
-        <button className="p-2 rounded hover:bg-[#23262F]/80 text-[#E5E7EB] text-xl">
-          <FiCode />
-        </button>
-        <button className="p-2 rounded hover:bg-[#23262F]/80 text-[#E5E7EB] text-xl">
-          <FiDownload />
-        </button>
-        <button className="p-2 rounded hover:bg-[#23262F]/80 text-[#E5E7EB] text-xl">
-          <FiPlay />
-        </button>
         <div className="relative">
           <button
             className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#377DFF] to-[#23262F] flex items-center justify-center ml-2 border-2 border-[#23262F] shadow"

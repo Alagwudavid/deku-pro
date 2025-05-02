@@ -11,6 +11,7 @@ import {
   FiVideo,
   FiClock,
   FiTrash2,
+  FiLogOut,
 } from "react-icons/fi";
 import { useStore } from "../../store/store";
 
@@ -109,7 +110,7 @@ export default function Sidebar() {
         </button>
         <div className="flex-1" />
         <button className="p-2 rounded-lg hover:bg-[#23262F] text-[#6B7280] text-xl">
-          <FiSettings />
+          <FiLogOut />
         </button>
       </div>
 

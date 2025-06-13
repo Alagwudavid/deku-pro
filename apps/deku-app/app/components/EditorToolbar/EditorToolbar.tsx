@@ -224,7 +224,7 @@ export default function EditorToolbar() {
         {items.map((item) => (
           <div key={item.id} className="relative">
             <button
-              className="w-full flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]"
+              className="w-full cursor-pointer flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]"
               onClick={() => {
                 if (item.submenu) {
                   setExpandedSubmenu(
@@ -273,7 +273,7 @@ export default function EditorToolbar() {
         <div className="hidden lg:flex items-center gap-4">
           <div className="relative" ref={fileMenuRef}>
             <button
-              className={`flex items-center gap-2 text-sm text-[#A1A1AA] hover:text-white ${
+              className={`flex cursor-pointer items-center gap-2 text-sm text-[#A1A1AA] hover:text-white ${
                 showFileMenu ? "text-white" : ""
               }`}
               onClick={() => setShowFileMenu(!showFileMenu)}
@@ -285,7 +285,7 @@ export default function EditorToolbar() {
                 {fileMenuItems.map((item) => (
                   <div key={item.id} className="relative">
                     <button
-                      className="w-full flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F] first:rounded-t-lg last:rounded-b-lg"
+                      className="w-full cursor-pointer flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F] first:rounded-t-lg last:rounded-b-lg"
                       onClick={() => {
                         if (item.submenu) {
                           setExpandedSubmenu(
@@ -314,7 +314,7 @@ export default function EditorToolbar() {
                         {item.submenu.map((subItem) => (
                           <div key={subItem.id} className="relative">
                             <button
-                              className="w-full flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]/50 first:rounded-t-lg last:rounded-b-lg"
+                              className="w-full cursor-pointer flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]/50 first:rounded-t-lg last:rounded-b-lg"
                               onClick={() => {
                                 if (subItem.submenu) {
                                   setExpandedSubmenu(
@@ -365,7 +365,7 @@ export default function EditorToolbar() {
 
           <div className="relative" ref={historyRef}>
             <button
-              className={`flex items-center gap-2 text-sm text-[#A1A1AA] hover:text-white ${
+              className={`cursor-pointer flex items-center gap-2 text-sm text-[#A1A1AA] hover:text-white ${
                 showHistoryPanel ? "text-white" : ""
               }`}
               onClick={() => setShowHistoryPanel(!showHistoryPanel)}
@@ -430,7 +430,7 @@ export default function EditorToolbar() {
 
           <div className="relative" ref={devicesRef}>
             <button
-              className="flex items-center gap-2 text-sm text-[#A1A1AA] hover:text-white"
+              className="cursor-pointer flex items-center gap-2 text-sm text-[#A1A1AA] hover:text-white"
               onClick={() => setShowDevices(!showDevices)}
             >
               <FiMonitor /> Devices
@@ -448,7 +448,7 @@ export default function EditorToolbar() {
                       className="border-b border-[#23262F] last:border-b-0"
                     >
                       <button
-                        className="w-full flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]"
+                        className="w-full cursor-pointer flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]"
                         onClick={() =>
                           setExpandedDeviceType(
                             expandedDeviceType === type ? null : type
@@ -471,7 +471,7 @@ export default function EditorToolbar() {
                           {deviceList.map((device) => (
                             <button
                               key={device.id}
-                              className="w-full flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]/50"
+                              className="w-full cursor-pointer flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]/50"
                               onClick={() => handleDeviceClick(device)}
                             >
                               {device.name}
@@ -489,15 +489,15 @@ export default function EditorToolbar() {
             )}
           </div>
 
-          <button className="flex items-center gap-2 text-sm text-[#A1A1AA] hover:text-white">
+          <button className="cursor-pointer flex items-center gap-2 text-sm text-[#A1A1AA] hover:text-white">
             <FiUpload /> Publish
           </button>
 
-          <button className="flex items-center gap-2 text-sm text-[#A1A1AA] hover:text-white">
+          <button className="cursor-pointer flex items-center gap-2 text-sm text-[#A1A1AA] hover:text-white">
             <FiPlay /> Run
           </button>
 
-          <button className="flex items-center gap-2 text-sm text-[#A1A1AA] hover:text-white">
+          <button className="cursor-pointer flex items-center gap-2 text-sm text-[#A1A1AA] hover:text-white">
             <FiHelpCircle /> Help
           </button>
         </div>
@@ -505,7 +505,7 @@ export default function EditorToolbar() {
         {/* Mobile Menu */}
         <div className="lg:hidden relative">
           <button
-            className="flex items-center gap-2 text-sm text-[#A1A1AA] hover:text-white"
+            className="cursor-pointer flex items-center gap-2 text-sm text-[#A1A1AA] hover:text-white"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             <FiMenu /> Menu
@@ -519,7 +519,7 @@ export default function EditorToolbar() {
               {/* File Menu Item */}
               <div className="relative">
                 <button
-                  className="w-full flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F] first:rounded-t-lg"
+                  className="w-full cursor-pointer flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F] first:rounded-t-lg"
                   onClick={() => setShowFileMenu(!showFileMenu)}
                 >
                   <div className="flex items-center gap-2">
@@ -534,7 +534,7 @@ export default function EditorToolbar() {
                     {fileMenuItems.map((item) => (
                       <div key={item.id} className="relative">
                         <button
-                          className="w-full flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F] first:rounded-t-lg last:rounded-b-lg"
+                          className="w-full cursor-pointer flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F] first:rounded-t-lg last:rounded-b-lg"
                           onClick={() => {
                             if (item.submenu) {
                               setExpandedSubmenu(
@@ -565,7 +565,7 @@ export default function EditorToolbar() {
               {/* History Menu Item */}
               <div className="relative">
                 <button
-                  className="w-full flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]"
+                  className="w-full cursor-pointer flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]"
                   onClick={() => setShowHistoryPanel(!showHistoryPanel)}
                 >
                   <div className="flex items-center gap-2">
@@ -623,7 +623,7 @@ export default function EditorToolbar() {
               {/* Devices Menu Item */}
               <div className="relative">
                 <button
-                  className="w-full flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]"
+                  className="w-full cursor-pointer flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]"
                   onClick={() => setShowDevices(!showDevices)}
                 >
                   <div className="flex items-center gap-2">
@@ -638,7 +638,7 @@ export default function EditorToolbar() {
                     {Object.entries(devices).map(([type, deviceList]) => (
                       <div key={type} className="relative">
                         <button
-                          className="w-full flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]"
+                          className="w-full cursor-pointer flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]"
                           onClick={() =>
                             setExpandedDeviceType(
                               expandedDeviceType === type ? null : type
@@ -662,7 +662,7 @@ export default function EditorToolbar() {
                             {deviceList.map((device) => (
                               <button
                                 key={device.id}
-                                className="w-full flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]"
+                                className="w-full cursor-pointer flex items-center justify-between px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]"
                                 onClick={() => handleDeviceClick(device)}
                               >
                                 <span>{device.name}</span>
@@ -680,13 +680,13 @@ export default function EditorToolbar() {
               </div>
 
               {/* Other Actions */}
-              <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]">
+              <button className="w-full cursor-pointer flex items-center gap-2 px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]">
                 <FiUpload /> Publish
               </button>
-              <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]">
+              <button className="w-full cursor-pointer flex items-center gap-2 px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F]">
                 <FiPlay /> Run
               </button>
-              <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F] last:rounded-b-lg">
+              <button className="w-full cursor-pointer flex items-center gap-2 px-4 py-2 text-sm text-[#A1A1AA] hover:text-white hover:bg-[#23262F] last:rounded-b-lg">
                 <FiHelpCircle /> Help
               </button>
             </div>
@@ -706,14 +706,14 @@ export default function EditorToolbar() {
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
           <button
-            className="p-1 text-[#A1A1AA] hover:text-white"
+            className="cursor-pointer p-1 text-[#A1A1AA] hover:text-white"
             onClick={() => setZoom((prev) => Math.max(prev - 10, 50))}
           >
             <FiMinus />
           </button>
           <span className="text-sm text-[#A1A1AA]">{zoom}%</span>
           <button
-            className="p-1 text-[#A1A1AA] hover:text-white"
+            className="cursor-pointer p-1 text-[#A1A1AA] hover:text-white"
             onClick={() => setZoom((prev) => Math.min(prev + 10, 200))}
           >
             <FiPlus />
@@ -721,7 +721,7 @@ export default function EditorToolbar() {
         </div>
 
         <button
-          className={`p-1 text-[#A1A1AA] hover:text-white transition-all duration-300 transform ${
+          className={`cursor-pointer p-1 text-[#A1A1AA] hover:text-white transition-all duration-300 transform ${
             showPropertiesPanel ? "text-white" : ""
           }`}
           onClick={() => setShowPropertiesPanel(!showPropertiesPanel)}

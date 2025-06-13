@@ -12,14 +12,14 @@ export default function Topbar() {
       <div className="flex items-center gap-2 text-[#6B7280] relative">
         <TbEditOff className="ml-1" />
         <span className="font-bold text-xl">deku</span>
-        <span className=" text-xs absolute top-0 -right-5">NG</span>
+        <span className="text-xs absolute top-0 -right-5 px-1 rounded-lg bg-[#377DFF] text-white">Pro</span>
       </div>
 
       {/* Right: user */}
       <div className="flex items-center gap-2 ml-auto">
         <div className="relative">
           <button
-            className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#377DFF] to-[#23262F] flex items-center justify-center ml-2 border-2 border-[#23262F] shadow"
+            className="cursor-pointer w-9 h-9 rounded-full bg-gradient-to-tr from-[#377DFF] to-[#23262F] flex items-center justify-center ml-2 border-2 border-[#23262F] shadow"
             onClick={() => setShowUserMenu(!showUserMenu)}
           >
             <img
@@ -30,13 +30,22 @@ export default function Topbar() {
           </button>
           {showUserMenu && (
             <div className="absolute right-0 mt-2 w-48 bg-[#23262F] border border-[#23262F] rounded-lg shadow-lg py-1 z-50">
-              <a href="#" className="block px-4 py-2 hover:bg-[#181A20]">
+              <a 
+                href="#"
+                className="cursor-pointer block px-4 py-2 hover:bg-[#181A20]"
+              >
                 Profile
               </a>
-              <a href="#" className="block px-4 py-2 hover:bg-[#181A20]">
+              <a
+                href="#"
+                className="cursor-pointer block px-4 py-2 hover:bg-[#181A20]"
+              >
                 Settings
               </a>
-              <a href="#" className="block px-4 py-2 hover:bg-[#181A20]">
+              <a
+                href="#"
+                className="cursor-pointer block px-4 py-2 hover:bg-[#181A20]"
+              >
                 Logout
               </a>
             </div>

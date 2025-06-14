@@ -1,12 +1,13 @@
 "use client";
 
+import Link from 'next/link';
 import { useState } from 'react';
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-white p-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-white text-gray-900 p-8">
       <header className="max-w-7xl mx-auto">
         <nav className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -19,8 +20,8 @@ export default function Home() {
           </a>
         </nav>
 
-        <div className="mt-16 text-center">
-          <div className="flex items-center justify-center space-x-4 text-sm text-gray-600 mb-4">
+        <div className="mt-16 px-5 text-start">
+          <div className="flex items-center space-x-4 text-sm text-gray-600 mb-4">
             <span>316 icons</span>
             <span>•</span>
             <span>MIT license</span>
@@ -33,10 +34,13 @@ export default function Home() {
             by the makers of Deku Pro.
           </h1>
 
-          <div className="flex items-center justify-center space-x-4">
+          <div className="flex items-center text-gray-900 space-x-4">
+            <Link href="/Editor" className="btn-primary inline-flex items-center space-x-2">
+              <span>Editor</span>
+            </Link>
             <a href="/docs" className="btn-primary inline-flex items-center space-x-2">
               <span>📚</span>
-              <span>Editor Documentation</span>
+              <span>Documentation</span>
             </a>
             <a href="/sponsor" className="btn-secondary inline-flex items-center space-x-2">
               <span>❤️</span>
@@ -48,7 +52,7 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="mt-16 max-w-md mx-auto">
+          <div className="mt-16 max-w-md">
             <div className="relative">
               <input
                 type="text"

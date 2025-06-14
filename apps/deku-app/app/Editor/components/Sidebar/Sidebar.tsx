@@ -1,169 +1,267 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect, useRef } from "react";
 import {
   FiLayers,
-  FiHome,
-  FiCode,
   FiChevronDown,
   FiChevronRight,
-  FiSettings,
-  FiFolder,
-  FiVideo,
-  FiClock,
+  FiEye,
+  FiEyeOff,
+  FiEdit2,
   FiTrash2,
-  FiLogOut,
 } from "react-icons/fi";
-import { useStore } from "../../store/store";
 
-const layers = [
-  {
-    name: "Scootric - Homepage",
-    children: [
-      {
-        name: "Hero Section",
-        children: [
-          { name: "Heading 1" },
-          { name: "Subheading" },
-          { name: "Button" },
-          { name: "Image-1" },
-          { name: "Right Button" },
-        ],
-      },
-      { name: "Navbar" },
-      { name: "Section" },
-      { name: "Gallery Section" },
-      { name: "Features Section" },
-    ],
-  },
-];
+interface SVGElement {
+  id: string;
+  type: string;
+  name: string;
+  visible: boolean;
+  children?: SVGElement[];
+}
 
-function LayerItem({ layer, depth = 0, selected, onSelect }: any) {
-  const [open, setOpen] = useState(true);
-  const hasChildren = layer.children && layer.children.length > 0;
-  const isSelected = selected === layer.name;
+interface LayerItemProps {
+  element: SVGElement;
+  depth?: number;
+  onToggleVisibility: (id: string) => void;
+  onSelect: (id: string) => void;
+  selectedId: string | null;
+}
+
+function removeComments(node: Node): void {
+  const walker = document.createTreeWalker(
+    node,
+    NodeFilter.SHOW_COMMENT,
+    null,
+    false
+  );
+  const comments: Comment[] = [];
+  while (walker.nextNode()) {
+    comments.push(walker.currentNode as Comment);
+  }
+  comments.forEach(comment => comment.remove());
+}
+
+function parseSVGContent(svgString: string): SVGElement[] {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(svgString, "image/svg+xml");
+  const svg = doc.querySelector("svg");
+
+  if (!svg) return [];
+  
+  // Remove comments from the SVG
+  removeComments(svg);
+
+  function parseElement(element: Element, id: string = "root"): SVGElement {
+    const children = Array.from(element.children).map((child, index) =>
+      parseElement(child, `${id}-${index}`)
+    );
+
+    return {
+      id,
+      type: element.tagName.toLowerCase(),
+      name: element.id || element.tagName.toLowerCase(),
+      visible: true,
+        ...(children.length > 0 && { children })
+    };
+  }
+
+  return [parseElement(svg)];
+}
+
+interface SidebarProps {
+  svgContent: string;
+  onLayerUpdate: (layers: SVGElement[]) => void;
+  onLayerSelect: (id: string | null) => void;
+}
+
+export default function Sidebar({ svgContent, onLayerUpdate, onLayerSelect }: SidebarProps) {
+  const [layers, setLayers] = useState<SVGElement[]>([]);
+  const [selectedLayerId, setSelectedLayerId] = useState<string | null>(null);
+
+  // Use a ref to track if this is the initial render
+  const initialRenderRef = useRef(true);
+  
+  useEffect(() => {
+    const parsedLayers = parseSVGContent(svgContent);
+    setLayers(parsedLayers);
+    
+    // Only call onLayerUpdate after the initial render is complete
+    if (initialRenderRef.current) {
+      initialRenderRef.current = false;
+    } else {
+      onLayerUpdate(parsedLayers);
+    }
+  }, [svgContent, onLayerUpdate]);
+
+  const handleSelect = (id: string) => {
+    setSelectedLayerId(id);
+    onLayerSelect(id);
+  };
+
+  const handleToggleVisibility = (id: string) => {
+    setLayers((prevLayers) => {
+      const updateVisibility = (elements: SVGElement[]): SVGElement[] => {
+        return elements.map((element) => {
+          if (element.id === id) {
+            return { ...element, visible: !element.visible };
+          }
+          if (element.children) {
+            return {
+              ...element,
+              children: updateVisibility(element.children),
+            };
+          }
+          return element;
+        });
+      };
+      const updatedLayers = updateVisibility(prevLayers);
+      return updatedLayers;
+    });
+  };
+  
+  // Use a separate effect to call onLayerUpdate when layers change
+  useEffect(() => {
+    // Skip the initial render
+    if (!initialRenderRef.current) {
+      onLayerUpdate(layers);
+    }
+  }, [layers, onLayerUpdate]);
+
+  const handleDelete = (id: string) => {
+    setLayers((prevLayers) => {
+      const deleteLayer = (elements: SVGElement[]): SVGElement[] => {
+        return elements.filter((element) => {
+          if (element.id === id) {
+            return false;
+          }
+          if (element.children) {
+            element.children = deleteLayer(element.children);
+          }
+          return true;
+        });
+      };
+      const updatedLayers = deleteLayer(prevLayers);
+      return updatedLayers;
+    });
+    
+    // Handle selected layer update separately
+    if (selectedLayerId === id) {
+      setSelectedLayerId(null);
+      onLayerSelect(null);
+    }
+  };
+
   return (
-    <div>
+    <div className="w-64 border-r border-gray-200 bg-white h-full flex flex-col">
+      <div className="p-4 border-b border-gray-200">
+        <div className="flex items-center gap-2 text-gray-700">
+          <FiLayers className="w-5 h-5" />
+          <h2 className="font-medium">Layers</h2>
+        </div>
+      </div>
+      <div className="flex-1 overflow-y-auto p-2">
+        {layers.map((layer) => (
+          <LayerItem
+            key={layer.id}
+            element={layer}
+            onToggleVisibility={handleToggleVisibility}
+            onSelect={handleSelect}
+            onDelete={handleDelete}
+            selectedId={selectedLayerId}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+interface LayerItemProps {
+  element: SVGElement;
+  depth?: number;
+  onToggleVisibility: (id: string) => void;
+  onSelect: (id: string) => void;
+  onDelete: (id: string) => void;
+  selectedId: string | null;
+}
+
+function LayerItem({ element, depth = 0, onToggleVisibility, onSelect, onDelete, selectedId }: LayerItemProps) {
+  const [isOpen, setIsOpen] = useState(true);
+  const hasChildren = element.children && element.children.length > 0;
+  const isSelected = selectedId === element.id;
+
+  return (
+    <div className="flex flex-col">
       <div
-        className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer transition
-          ${isSelected ? "bg-[#23262F] text-white" : "hover:bg-[#23262F]/80 text-[#E5E7EB]"}
-          ${depth === 0 ? "font-semibold" : ""}
+        className={`flex items-center gap-2 px-2 py-1.5 rounded cursor-pointer transition group
+          ${isSelected ? "bg-purple-100 text-purple-900" : "hover:bg-gray-100"}
         `}
         style={{ paddingLeft: `${depth * 16 + 8}px` }}
-        onClick={() => {
-          if (hasChildren) setOpen((o) => !o);
-          onSelect(layer.name);
-        }}
+        onClick={() => onSelect(element.id)}
       >
-        {hasChildren && (
-          <span className="text-xs">
-            {open ? <FiChevronDown /> : <FiChevronRight />}
-          </span>
-        )}
-        <span>{layer.name}</span>
+        <div className="flex items-center gap-2 flex-1">
+          {hasChildren ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOpen(!isOpen);
+              }}
+              className="p-0.5 hover:bg-gray-200 rounded transition-colors"
+            >
+              {isOpen ? (
+                <FiChevronDown className="w-4 h-4" />
+              ) : (
+                <FiChevronRight className="w-4 h-4" />
+              )}
+            </button>
+          ) : (
+            <span className="w-5" />
+          )}
+          
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleVisibility(element.id);
+            }}
+            className="p-0.5 hover:bg-gray-200 rounded transition-colors"
+          >
+            {element.visible ? (
+              <FiEye className="w-4 h-4" />
+            ) : (
+              <FiEyeOff className="w-4 h-4" />
+            )}
+          </button>
+
+          <span className="flex-1 truncate text-sm">{element.name}</span>
+        </div>
+        
+        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button 
+            className="p-1 hover:bg-gray-200 rounded transition-colors text-red-600"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(element.id);
+            }}
+          >
+            <FiTrash2 className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
-      {open && hasChildren && (
-        <div>
-          {layer.children.map((child: any, i: number) => (
+
+      {hasChildren && isOpen && (
+        <div className="ml-4">
+          {element.children.map((child) => (
             <LayerItem
-              key={i}
-              layer={child}
+              key={child.id}
+              element={child}
               depth={depth + 1}
-              selected={selected}
+              onToggleVisibility={onToggleVisibility}
               onSelect={onSelect}
+              onDelete={onDelete}
+              selectedId={selectedId}
             />
           ))}
         </div>
       )}
     </div>
-  );
-}
-
-export default function Sidebar() {
-  const { showHistoryPanel } = useStore();
-  const [selected, setSelected] = useState("Hero Section");
-  const [showPanel, setShowPanel] = useState(false);
-
-  // Show panel on hover or when toggled open
-  const handleMouseEnter = () => setShowPanel(true);
-  const handleMouseLeave = () => setShowPanel(false);
-  const handleToggle = () => setShowPanel((v) => !v);
-
-  return (
-    <>
-      {/* Vertical Icon Bar */}
-      <div className="fixed top-14 left-0 h-[calc(100vh-3.5rem)] flex flex-col items-center py-4 px-2 bg-[#181A20] shadow-lg gap-4 z-30 border-r border-[#23262F]">
-        <button
-          className={`p-2 rounded-lg hover:bg-[#23262F] text-[#377DFF] text-xl transition`}
-          onClick={handleToggle}
-          aria-label="Show Layers"
-        >
-          <FiLayers />
-        </button>
-        <button className="p-2 rounded-lg hover:bg-[#23262F] text-[#6B7280] text-xl">
-          <FiCode />
-        </button>
-        <button className="p-2 rounded-lg hover:bg-[#23262F] text-[#6B7280] text-xl">
-          <FiVideo />
-        </button>
-        <button className="p-2 rounded-lg hover:bg-[#23262F] text-[#6B7280] text-xl">
-          <FiFolder />
-        </button>
-        <div className="flex-1" />
-        <button className="p-2 rounded-lg hover:bg-[#23262F] text-[#6B7280] text-xl">
-          <FiLogOut />
-        </button>
-      </div>
-
-      {/* Floating Main Panel */}
-      <div
-        className={`
-          fixed top-16 left-16 h-[calc(100vh-5rem)] w-80
-          z-40
-          transition-all duration-300
-          ${showPanel ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none -translate-x-4"}
-        `}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        style={{ boxShadow: "0 8px 32px 0 rgba(0,0,0,0.25)" }}
-      >
-        <div className="bg-[#181A20] rounded-2xl flex flex-col h-full border border-[#23262F]">
-          {/* Layers Card */}
-          <div className="p-4 pb-2 border-b border-[#23262F] flex items-center justify-between">
-            <span className="text-white font-semibold text-base">Layers</span>
-            <button className="text-[#6B7280] hover:text-[#377DFF] text-xl">
-              +
-            </button>
-          </div>
-          {/* Scrollable content */}
-          <div className="flex-1 overflow-y-auto p-2">
-            {layers.map((layer, i) => (
-              <LayerItem
-                key={i}
-                layer={layer}
-                selected={selected}
-                onSelect={setSelected}
-              />
-            ))}
-            <div className="mt-6 text-xs uppercase text-[#6B7280] mb-2">
-              Components
-            </div>
-            <div className="flex flex-col gap-2">
-              <button className="bg-[#23262F] hover:bg-[#23262F]/80 text-white rounded px-3 py-2 text-left shadow">
-                Button
-              </button>
-              <button className="bg-[#23262F] hover:bg-[#23262F]/80 text-white rounded px-3 py-2 text-left shadow">
-                Card
-              </button>
-            </div>
-          </div>
-          {/* Bottom Card */}
-          <div className="p-4 border-t border-[#23262F]">
-            <button className="flex items-center gap-2 text-[#6B7280] hover:text-white w-full">
-              <FiLayers /> Home
-            </button>
-          </div>
-        </div>
-      </div>
-    </>
   );
 }
